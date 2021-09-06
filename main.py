@@ -12,10 +12,9 @@ G = {
     "h": {"g": 9}
 }
 
-outcome = "a"
 income = "f"
 
-def set_edges(graph):
+def Dijkstra(graph, outcome):
 
     vertices = [x for x in graph] #get all of the graph vertices
 
@@ -25,35 +24,39 @@ def set_edges(graph):
         map[item] =  {"distance": graph[outcome][item], "visited": False}
 
     map[outcome]["visited"] = True
-    # poped__distance = map.copy()
-    # poped__distance.pop(outcome)
+    visitCount = 1
 
-    # vertices.remove(outcome)
-    min = 999
+    print("First iteration: \n", map, "\n")
 
-    print(map)
+    while(visitCount < len(vertices)):
+        for item in map:
+            if map[item]["visited"] == False:
+                min = item
 
-    # find a minmal mark in the current dict sequence
-    for vertice in map:
-        if(map[vertice]["visited"]):
-            pass
-        else:
-            if(map[vertice]["distance"] < min):
-                min = vertice
+        print("Minimal mark is:", min)
 
-    print(map)
-    
-    # for item in graph[min]:
-    #     print("Current V is:", min)
+        # find a minmal mark in the current dict sequence
+        for vertice in map:
+            if(map[vertice]["visited"]):
+                pass
+            else:
+                if(map[vertice]["distance"] < map[min]["distance"]):
+                    min = vertice
+                    
+        for item in graph[min]:
+            if(item in map.keys()):
+                way = map[min]["distance"] + graph[min][item]
 
-    #     way = map[min] + graph[min][item]
+                if(way < map[item]["distance"]): #ERROR HERE!!
+                    map[item]["distance"] = way
+                    print("The distance to vertice", item.upper(), "was updated")
+                
+            else:
+                map[item] = {"distance": graph[min][item], "visited": False}
         
-    #     print("Detecting the minimal distance...")
-    #     if((item in map) & (way < map[item])):
-    #         map[item] = way
-    #         print("Shortest way for Vert '", item, "' is updated")
+        map[min]["visited"] =  True
+        visitCount += 1
 
-    # print(map)
+        print(map, "\n")
 
-
-set_edges(G)
+Dijkstra(G, "b")
