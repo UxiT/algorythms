@@ -26,14 +26,17 @@ def Dijkstra(graph, outcome):
     map[outcome]["visited"] = True
     visitCount = 1
 
-    print("First iteration: \n", map, "\n")
+    print("First iteration: \n")
+    for item in map:
+        print(outcome.upper(), "--",map[item]["distance"], "-->", item.upper(), ", Visited: ", map[item]["visited"])
+    print("-------------------------------")
 
     while(visitCount < len(vertices)):
+
         for item in map:
             if map[item]["visited"] == False:
                 min = item
 
-        print("Minimal mark is:", min)
 
         # find a minmal mark in the current dict sequence
         for vertice in map:
@@ -43,20 +46,27 @@ def Dijkstra(graph, outcome):
                 if(map[vertice]["distance"] < map[min]["distance"]):
                     min = vertice
                     
+        print("Now on vertice", min.upper(), '\n')
+        
         for item in graph[min]:
             if(item in map.keys()):
                 way = map[min]["distance"] + graph[min][item]
 
-                if(way < map[item]["distance"]): #ERROR HERE!!
+                if(way < map[item]["distance"]):
                     map[item]["distance"] = way
-                    print("The distance to vertice", item.upper(), "was updated")
+                    print("The distance to vertice", item.upper(), "was updated ----->", way)
                 
             else:
-                map[item] = {"distance": graph[min][item], "visited": False}
+                way = graph[min][item] + map[min]["distance"]
+                map[item] = {"distance": way, "visited": False}
         
         map[min]["visited"] =  True
         visitCount += 1
 
-        print(map, "\n")
+        # printing out results of iteration
+        for item in map:
+            print(outcome.upper(), "--",map[item]["distance"], "-->", item.upper(), ", Visited: ", map[item]["visited"])
 
-Dijkstra(G, "b")
+        print("-------------------------------")
+
+Dijkstra(G, "c")
